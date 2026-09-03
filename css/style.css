@@ -1,0 +1,328 @@
+/* ============================================
+   VARIABLES — couleurs et dimensions globales
+   ============================================ */
+:root {
+  --bleu: #1a56bb;           /* bleu principal */
+  --bleu-clair: #eff6ff;     /* fond bleu très clair item actif */
+  --header-bg: #ffffff;      /* fond blanc header */
+  --sidebar-bg: #ffffff;     /* fond blanc sidebar */
+  --main-bg: #f8fafc;        /* fond gris très clair zone principale */
+  --carte-bg: #ffffff;       /* fond blanc des cartes */
+  --texte-titre: #0f172a;    /* texte noir foncé */
+  --texte-gris: #64748b;     /* texte gris secondaire */
+  --border: #e2e8f0;         /* couleur des bordures */
+  --sidebar-width: 220px;    /* largeur fixe sidebar */
+  --header-height: 56px;     /* hauteur fixe header */
+}
+
+/* ============================================
+   RESET — supprime les styles par défaut
+   ============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;        /* padding inclus dans la largeur */
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background-color: var(--main-bg);
+  color: var(--texte-titre);
+  min-height: 100vh;
+}
+
+/* ============================================
+   HEADER — barre du haut fixe sur toute la page
+   ============================================ */
+.header {
+  position: fixed;               /* reste en place au scroll */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  background-color: var(--header-bg);
+  border-bottom: 1px solid var(--border); /* ligne sous le header */
+  display: flex;
+  align-items: center;
+  z-index: 100;                  /* reste au-dessus de tout */
+}
+
+/* Zone gauche du header : vide mais garde l'espace de la sidebar */
+.header-left {
+  width: var(--sidebar-width);
+  border-right: 1px solid var(--border); /* ligne verticale sidebar/header */
+  height: 100%;
+  display: flex;
+}
+
+/* Titre "AI Workspace" dans la zone main du header */
+.header-center {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--texte-titre);
+  padding-left: 32px;   /* aligne avec le contenu du main */
+  flex: 1;
+}
+
+/* Utilisateur à droite */
+.header-right {
+  font-size: 14px;
+  color: var(--texte-gris);
+  cursor: pointer;
+  padding-right: 24px;
+}
+
+/* ============================================
+   CONTAINER — zone sous le header
+   ============================================ */
+.container {
+  display: flex;                            /* sidebar et main côte à côte */
+  margin-top: var(--header-height);         /* descend sous le header */
+  min-height: calc(100vh - var(--header-height));
+}
+
+/* ============================================
+   SIDEBAR — barre latérale gauche blanche
+   ============================================ */
+.sidebar {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  width: var(--sidebar-width);
+  height: calc(100vh - var(--header-height));
+  background-color: var(--sidebar-bg);     /* fond blanc */
+  border-right: 1px solid var(--border);   /* ligne verticale droite */
+  padding: 20px 0;
+  overflow-y: auto;
+}
+
+/* Titre "AI Workspace" dans la sidebar */
+.sidebar-title {
+  color: var(--texte-titre);    /* noir */
+  font-size: 15px;
+  font-weight: 700;
+  padding: 0 16px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+
+/* Liste menu sans puces */
+.nav-list {
+  list-style: none;
+}
+
+/* Chaque item du menu */
+.nav-item {
+  padding: 10px 16px;
+  color: var(--texte-gris);       /* gris par défaut */
+  font-size: 14px;
+  cursor: pointer;
+  border-left: 3px solid transparent; /* trait gauche invisible */
+  transition: all 0.2s;
+}
+
+/* Survol : fond gris très clair + texte bleu */
+.nav-item:hover {
+  background-color: #f1f5f9;
+  color: var(--bleu);
+}
+
+/* Item actif : trait bleu + fond bleu très clair + texte bleu */
+.nav-item.active {
+  border-left: 3px solid var(--bleu);
+  background-color: var(--bleu-clair);
+  color: var(--bleu);
+  font-weight: 600;
+}
+
+/* ============================================
+   MAIN — zone de contenu principale
+   ============================================ */
+.main {
+  margin-left: var(--sidebar-width);  /* pousse après la sidebar */
+  flex: 1;
+  padding: 32px;
+}
+
+/* Titre du module ex: "Tableau de bord" */
+.module-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--texte-titre);
+  margin-bottom: 4px;
+}
+
+/* Sous-titre gris */
+.module-subtitle {
+  font-size: 14px;
+  color: var(--texte-gris);
+  margin-bottom: 24px;
+}
+
+/* ============================================
+   STATS — 5 cartes en grille
+   ============================================ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 colonnes égales */
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* Chaque carte stat */
+.stat-card {
+  background-color: var(--carte-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;  /* empile les éléments verticalement */
+}
+
+/* Label en haut de la carte */
+.stat-label {
+  font-size: 12px;
+  color: var(--texte-gris);
+  margin-bottom: 8px;
+  line-height: 1.4;
+  min-height: 32px;        /* même hauteur pour tous les labels */
+}
+
+/* Chiffre principal */
+.stat-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--texte-titre);
+  margin-bottom: 6px;
+}
+
+/* Variation mensuelle — couleur différente par carte */
+.stat-change         { font-size: 12px; margin-top: auto; }
+.stat-change.bleu    { color: #1a56bb; }
+.stat-change.vert    { color: #22c55e; }
+.stat-change.cyan    { color: #06b6d4; }
+.stat-change.orange  { color: #f97316; }
+.stat-change.or      { color: #eab308; }
+
+/* ============================================
+   GRAPHIQUES — 2 côte à côte
+   ============================================ */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* 2 colonnes égales */
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* Boîte de chaque graphique */
+.chart-box {
+  background-color: var(--carte-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+/* Titre du graphique : texte à gauche, filtre à droite */
+.chart-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.chart-title-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--texte-titre);
+}
+
+/* "7 derniers jours ▾" à droite */
+.chart-title-filter {
+  font-size: 12px;
+  color: var(--texte-gris);
+  cursor: pointer;
+  background-color: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+/* Image du graphique prend toute la largeur */
+.chart-box img {
+  width: 100%;
+  border-radius: 4px;
+}
+
+/* ============================================
+   TABLEAUX BAS — 2 côte à côte
+   ============================================ */
+.tables-grid {
+  display: grid;
+  grid-template-columns: 5fr 3fr;
+  gap: 16px;
+}
+
+
+/* Chaque section tableau */
+.table-section {
+  background-color: var(--carte-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.table-section h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--texte-titre);
+}
+
+/* Tableau sans double bordures */
+.activity-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+/* En-têtes colonnes */
+.activity-table th {
+  text-align: left;
+  padding: 8px 12px;
+  color: var(--texte-gris);
+  font-weight: 500;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Cellules */
+.activity-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--texte-titre);
+}
+
+/* Pas de bordure sur la dernière ligne */
+.activity-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Lien bleu en bas à droite des tableaux */
+.table-link {
+  display: block;
+  text-align: right;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--bleu);
+  text-decoration: none;
+}
+
+.table-link:hover {
+  text-decoration: underline;
+}
+
+/* ============================================
+   UTILITAIRE — masque un module
+   ============================================ */
+.hidden {
+  display: none;
+}
