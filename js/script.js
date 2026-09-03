@@ -259,11 +259,113 @@ function reinitialiserChat() {
     messagesBox.innerHTML = `<div class="chat-msg bot">👋 Nouvelle conversation démarrée !</div>`;
   }
 }
+
+// ─── MODULE PRÉDICTION ───────────────────────────────────────
+function buildPrediction() {
+  const section = document.getElementById('module-prediction');
+  if (!section) return;
+
+  section.innerHTML = `
+    <div class="module-card">
+      <h2>📊 Prédiction IA</h2>
+      <p class="module-desc">
+        Remplis les informations ci-dessous pour obtenir une prédiction personnalisée.
+      </p>
+
+      <label class="input-label">Âge :</label>
+      <input type="number" class="text-area" id="input-age"
+        min="18" max="100" placeholder="Ex: 35"
+        style="height:auto; padding:0.5rem;" />
+
+      <label class="input-label">Revenu mensuel (FCFA) :</label>
+      <input type="number" class="text-area" id="input-revenu"
+        min="0" placeholder="Ex: 250000"
+        style="height:auto; padding:0.5rem;" />
+
+      <label class="input-label">Ville :</label>
+      <select class="text-area" id="input-ville"
+        style="height:auto; padding:0.5rem;">
+        <option value="dakar">Dakar</option>
+        <option value="thies">Thiès</option>
+        <option value="saint-louis">Saint-Louis</option>
+        <option value="ziguinchor">Ziguinchor</option>
+        <option value="kaolack">Kaolack</option>
+        <option value="autre">Autre</option>
+      </select>
+
+      <button class="btn-primary" onclick="predire()">
+        📈 Prédire
+      </button>
+
+      <div class="output-box" id="output-prediction">
+        La prédiction apparaîtra ici...
+      </div>
+    </div>
+  `;
+}
+
+function predire() {
+  const age = parseInt(document.getElementById('input-age').value);
+  const revenu = parseInt(document.getElementById('input-revenu').value);
+  const ville = document.getElementById('input-ville').value;
+  const output = document.getElementById('output-prediction');
+
+  // Vérification
+  if (!age || !revenu) {
+    output.textContent = "⚠️ Merci de remplir tous les champs.";
+    return;
+  }
+
+  // Calcul du score fictif
+  let score = 0;
+
+  // Score selon l'âge
+  if (age >= 25 && age <= 45) score += 40;
+  else if (age > 45 && age <= 60) score += 25;
+  else score += 10;
+
+  // Score selon le revenu
+  if (revenu >= 500000) score += 50;
+  else if (revenu >= 200000) score += 35;
+  else if (revenu >= 100000) score += 20;
+  else score += 5;
+
+  // Bonus selon la ville
+  if (ville === "dakar") score += 10;
+  else if (ville === "thies" || ville === "saint-louis") score += 7;
+  else score += 3;
+
+  // Limiter entre 0 et 100
+  score = Math.min(100, score);
+
+  // Profil selon le score
+  let profil, conseil;
+  if (score >= 75) {
+    profil = "🟢 Profil Excellent";
+    conseil = "Vous êtes éligible aux offres premium. Excellent potentiel d'investissement.";
+  } else if (score >= 50) {
+    profil = "🟡 Profil Intermédiaire";
+    conseil = "Bon profil avec quelques axes d'amélioration. Éligible aux offres standard.";
+  } else {
+    profil = "🔴 Profil à développer";
+    conseil = "Nous vous recommandons nos offres d'accompagnement pour améliorer votre profil.";
+  }
+
+  output.innerHTML = `
+    <strong>${profil}</strong><br><br>
+    Score IA : <strong>${score}/100</strong><br><br>
+    📍 Ville : ${ville.charAt(0).toUpperCase() + ville.slice(1)}<br>
+    👤 Âge : ${age} ans<br>
+    💰 Revenu : ${revenu.toLocaleString()} FCFA<br><br>
+    💡 ${conseil}
+  `;
+}
 // ─── DÉMARRAGE ───────────────────────────────────────────────
 // S'exécute quand tout le HTML est chargé
 document.addEventListener('DOMContentLoaded', function () {
   buildResume();            // Construit le module résumé
   buildTraduction();        // Construit le module traduction
+  buildPrediction();        // Construit le module prédiction
     buildChat();              // Construit le module chat
   showModule('dashboard'); // Affiche le dashboard par défaut
 });
