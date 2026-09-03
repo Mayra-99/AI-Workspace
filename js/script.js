@@ -195,10 +195,75 @@ async function traduireTexte() {
     outputBox.textContent = "❌ Erreur : " + erreur.message;
   }
 }
+
+// ─── MODULE CHAT ─────────────────────────────────────────────
+function buildChat() {
+  const section = document.getElementById('module-chat');
+  if (!section) return;
+
+  section.innerHTML = `
+    <div class="module-card">
+      <h2>💬 Chat IA</h2>
+      <p class="module-desc">Discute avec une IA conversationnelle.</p>
+
+      <div class="chat-box" id="chat-messages">
+        <div class="chat-msg bot">👋 Bonjour ! Je suis votre assistant IA. Comment puis-je vous aider ?</div>
+      </div>
+
+      <div class="chat-input-row">
+        <input type="text" class="chat-input" id="input-chat"
+          placeholder="Écris ton message..."
+          onkeydown="if(event.key==='Enter') envoyerMessage()" />
+        <button class="btn-primary" onclick="envoyerMessage()">Envoyer ➤</button>
+      </div>
+
+      <button class="btn-secondary" onclick="reinitialiserChat()">🔄 Nouvelle conversation</button>
+    </div>
+  `;
+}
+
+async function envoyerMessage() {
+  const input = document.getElementById('input-chat');
+  const messagesBox = document.getElementById('chat-messages');
+  const message = input.value.trim();
+
+  if (!message) return;
+
+  // Afficher le message de l'utilisateur
+  messagesBox.innerHTML += `<div class="chat-msg user">👤 ${message}</div>`;
+  input.value = "";
+  messagesBox.scrollTop = messagesBox.scrollHeight;
+
+  // Message de chargement
+  const loadingId = "loading-" + Date.now();
+  messagesBox.innerHTML += `<div class="chat-msg bot" id="${loadingId}">⏳ L'IA réfléchit...</div>`;
+  messagesBox.scrollTop = messagesBox.scrollHeight;
+
+  try {
+    const resultat = await appelHuggingFace("microsoft/DialoGPT-medium", {
+      inputs: message
+    });
+
+    const reponse = resultat?.generated_text || "Je n'ai pas compris, reformulez.";
+    document.getElementById(loadingId).textContent = "🤖 " + reponse;
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+
+  } catch (erreur) {
+    document.getElementById(loadingId).textContent = "❌ Erreur : " + erreur.message;
+  }
+}
+
+function reinitialiserChat() {
+  const messagesBox = document.getElementById('chat-messages');
+  if (messagesBox) {
+    messagesBox.innerHTML = `<div class="chat-msg bot">👋 Nouvelle conversation démarrée !</div>`;
+  }
+}
 // ─── DÉMARRAGE ───────────────────────────────────────────────
 // S'exécute quand tout le HTML est chargé
 document.addEventListener('DOMContentLoaded', function () {
   buildResume();            // Construit le module résumé
   buildTraduction();        // Construit le module traduction
+    buildChat();              // Construit le module chat
   showModule('dashboard'); // Affiche le dashboard par défaut
 });
