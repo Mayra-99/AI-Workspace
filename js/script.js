@@ -27,13 +27,24 @@ async function appelHuggingFace(nomModele, donnees) {
     return [{
       summary_text: "Résumé : " + mots   }];
   }
-
-  if (nomModele.includes("opus-mt")) {
-    // Traduction simulée FR → EN
-    return [{
-      translation_text: "[Translated] " + texte.substring(0, 100) + "... [Helsinki-NLP model]"
-    }];
-  }
+if (nomModele.includes("opus-mt")) {
+  const dictionnaire = {
+    "je": "I", "suis": "am", "heureuse": "happy", "heureux": "happy",
+    "bonjour": "hello", "merci": "thank you", "oui": "yes", "non": "no",
+    "le": "the", "la": "the", "les": "the", "un": "a", "une": "a",
+    "et": "and", "ou": "or", "mais": "but", "avec": "with", "pour": "for",
+    "dans": "in", "sur": "on", "de": "of", "du": "of the",
+    "bien": "well", "très": "very", "aussi": "also",
+    "nous": "we", "vous": "you", "ils": "they", "elle": "she", "il": "he",
+    "monde": "world", "vie": "life", "temps": "time", "travail": "work",
+    "beau": "beautiful", "belle": "beautiful", "grand": "big", "petit": "small",
+    "comment": "how", "ça": "it", "va": "goes", "mon": "my", "ton": "your",
+    "ami": "friend", "eau": "water", "soleil": "sun", "jour": "day", "nuit": "night"
+  };
+  const mots = texte.toLowerCase().split(" ");
+  const traduits = mots.map(mot => dictionnaire[mot] || mot);
+  return [{ translation_text: traduits.join(" ") }];
+}
 
   if (nomModele.includes("DialoGPT")) {
     // Réponses chat variées et réalistes
@@ -136,10 +147,58 @@ async function resumerTexte() {
     console.error("Erreur résumé :", erreur);
   }
 }
+// ─── MODULE TRADUCTION ───────────────────────────────────────
+function buildTraduction() {
+  const section = document.getElementById('module-traduction');
+  if (!section) return;
 
+  section.innerHTML = `
+    <div class="module-card">
+      <h2>🌍 Traduction</h2>
+      <p class="module-desc">
+        Traduit automatiquement ton texte du Français vers l'Anglais.
+      </p>
+      <label class="input-label">Texte en français :</label>
+      <textarea class="text-area" id="input-traduction"
+        placeholder="Écris ton texte en français ici..."
+        rows="6"></textarea>
+      <button class="btn-primary" onclick="traduireTexte()">
+        🔄 Traduire en Anglais
+      </button>
+      <label class="input-label" style="margin-top:1rem;">Traduction en anglais :</label>
+      <div class="output-box" id="output-traduction">
+        La traduction apparaîtra ici...
+      </div>
+    </div>
+  `;
+}
+
+async function traduireTexte() {
+  const texte = document.getElementById('input-traduction').value.trim();
+  const outputBox = document.getElementById('output-traduction');
+
+  if (!texte) {
+    outputBox.textContent = "⚠️ Merci de saisir un texte à traduire.";
+    return;
+  }
+
+  outputBox.textContent = "⏳ Traduction en cours...";
+
+  try {
+    const resultat = await appelHuggingFace("Helsinki-NLP/opus-mt-fr-en", {
+      inputs: texte
+    });
+    const traduction = resultat[0]?.translation_text || "Traduction indisponible.";
+    outputBox.textContent = traduction;
+
+  } catch (erreur) {
+    outputBox.textContent = "❌ Erreur : " + erreur.message;
+  }
+}
 // ─── DÉMARRAGE ───────────────────────────────────────────────
 // S'exécute quand tout le HTML est chargé
 document.addEventListener('DOMContentLoaded', function () {
   buildResume();            // Construit le module résumé
+  buildTraduction();        // Construit le module traduction
   showModule('dashboard'); // Affiche le dashboard par défaut
 });
