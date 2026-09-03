@@ -4,28 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Workspace</title>
-  <!-- Lien vers notre fichier CSS -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <!-- ===== ENTÊTE ===== -->
+  <!-- ===== HEADER ===== -->
   <header class="header">
-    <div class="header-logo">AI Workspace</div>
-    <div class="header-user">Admin User ▾</div>
+    <div class="header-left"></div>
+    <div class="header-center">AI Workspace</div>
+    <div class="header-right">Admin User ▾</div>
   </header>
 
-  <!-- ===== CONTENEUR PRINCIPAL (sidebar + main) ===== -->
+  <!-- ===== CONTAINER ===== -->
   <div class="container">
 
-    <!-- === BARRE LATÉRALE === -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <h2 class="sidebar-title">AI Workspace</h2>
-
-      <!-- Menu de navigation -->
       <nav>
         <ul class="nav-list">
-          <!-- Chaque item appelle showModule() en JS pour afficher le bon contenu -->
           <li class="nav-item active" onclick="showModule('dashboard')">Tableau de bord</li>
           <li class="nav-item" onclick="showModule('chat')">Chat</li>
           <li class="nav-item" onclick="showModule('resume')">Résumé de texte</li>
@@ -36,94 +33,149 @@
       </nav>
     </aside>
 
-    <!-- === ZONE PRINCIPALE === -->
+    <!-- MAIN -->
     <main class="main" id="main-content">
 
-      <!-- TABLEAU DE BORD (affiché par défaut) -->
+      <!-- DASHBOARD -->
       <section id="module-dashboard">
         <h1 class="module-title">Tableau de bord</h1>
         <p class="module-subtitle">Bienvenue sur votre espace de travail intelligent.</p>
 
-        <!-- Cartes de statistiques fictives -->
+        <!-- 5 cartes stats -->
         <div class="stats-grid">
           <div class="stat-card">
             <p class="stat-label">Nombre de jeux de données</p>
             <p class="stat-value">24</p>
-            <p class="stat-change">+3 ce mois-ci</p>
+            <p class="stat-change bleu">+3 ce mois-ci</p>
           </div>
           <div class="stat-card">
             <p class="stat-label">Nombre de requêtes</p>
             <p class="stat-value">1 256</p>
-            <p class="stat-change">+18% ce mois-ci</p>
+            <p class="stat-change vert">+18% ce mois-ci</p>
           </div>
           <div class="stat-card">
             <p class="stat-label">Modèles disponibles</p>
             <p class="stat-value">12</p>
-            <p class="stat-change">+2 ce mois-ci</p>
+            <p class="stat-change cyan">+2 ce mois-ci</p>
           </div>
           <div class="stat-card">
             <p class="stat-label">Utilisateurs actifs</p>
             <p class="stat-value">8</p>
-            <p class="stat-change">+2 ce mois-ci</p>
+            <p class="stat-change orange">+2 ce mois-ci</p>
           </div>
           <div class="stat-card">
             <p class="stat-label">Tâches exécutées</p>
             <p class="stat-value">342</p>
-            <p class="stat-change">+22% ce mois-ci</p>
+            <p class="stat-change or">+22% ce mois-ci</p>
           </div>
         </div>
 
-        <!-- Graphiques : captures d'écran du PDF insérées comme images -->
+        <!-- 2 graphiques -->
         <div class="charts-grid">
           <div class="chart-box">
-            <p class="chart-title">Requêtes par jour <span>7 derniers jours ▾</span></p>
-            <!-- Image capturée depuis le PDF du prof -->
+            <p class="chart-title">
+              <span class="chart-title-text">Requêtes par jour</span>
+              <span class="chart-title-filter">7 derniers jours ▾</span>
+            </p>
             <img src="images/graph1.png" alt="Graphique requêtes par jour" />
           </div>
           <div class="chart-box">
-            <p class="chart-title">Répartition des requêtes par service</p>
-            <!-- Image capturée depuis le PDF du prof -->
+            <p class="chart-title">
+              <span class="chart-title-text">Répartition des requêtes par service</span>
+            </p>
             <img src="images/graph2.png" alt="Graphique répartition" />
           </div>
         </div>
 
-        <!-- Tableau activité récente (données fictives) -->
-        <div class="table-section">
-          <h3>Activité récente</h3>
-          <table class="activity-table">
-            <thead>
-              <tr>
-                <th>Activité</th>
-                <th>Service</th>
-                <th>Utilisateur</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Résumé du document_projet.pdf</td>
-                <td>Résumé de texte</td>
-                <td>Admin User</td>
-                <td>21/05/2024 14:32</td>
-              </tr>
-              <tr>
-                <td>Classification de sentiments</td>
-                <td>Classification</td>
-                <td>Admin User</td>
-                <td>21/05/2024 14:31</td>
-              </tr>
-              <tr>
-                <td>Traduction FR → EN</td>
-                <td>Traduction</td>
-                <td>Admin User</td>
-                <td>21/05/2024 14:15</td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- 2 tableaux côte à côte -->
+        <div class="tables-grid">
+
+          <div class="table-section">
+            <h3>Activité récente</h3>
+            <table class="activity-table">
+              <thead>
+                <tr>
+                  <th>Activité</th>
+                  <th>Service</th>
+                  <th>Utilisateur</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Résumé du document_projet.pdf</td>
+                  <td>Résumé de texte</td>
+                  <td>Admin User</td>
+                  <td>21/05/2024 14:32</td>
+                </tr>
+                <tr>
+                  <td>Classification de sentiments</td>
+                  <td>Classification</td>
+                  <td>Admin User</td>
+                  <td>21/05/2024 14:21</td>
+                </tr>
+                <tr>
+                  <td>Traduction FR → EN</td>
+                  <td>Traduction</td>
+                  <td>Admin User</td>
+                  <td>21/05/2024 14:15</td>
+                </tr>
+                <tr>
+                  <td>Discussion sur l'IA générative</td>
+                  <td>Chat</td>
+                  <td>Admin User</td>
+                  <td>21/05/2024 14:05</td>
+                </tr>
+                <tr>
+                  <td>Génération d'idées de projet</td>
+                  <td>Idées</td>
+                  <td>Admin User</td>
+                  <td>21/05/2024 13:50</td>
+                </tr>
+              </tbody>
+            </table>
+            <a href="#" class="table-link">Voir tout l'historique</a>
+          </div>
+
+          <div class="table-section">
+            <h3>Modèles populaires</h3>
+            <table class="activity-table">
+              <thead>
+                <tr>
+                  <th>Modèle</th>
+                  <th style="text-align:right">Utilisations</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>mistral-7b-instruct</td>
+                  <td style="text-align:right">532</td>
+                </tr>
+                <tr>
+                  <td>gpt-4-turbo</td>
+                  <td style="text-align:right">389</td>
+                </tr>
+                <tr>
+                  <td>llama-3-8b</td>
+                  <td style="text-align:right">256</td>
+                </tr>
+                <tr>
+                  <td>bert-base-uncased</td>
+                  <td style="text-align:right">179</td>
+                </tr>
+                <tr>
+                  <td>google-translate-v1</td>
+                  <td style="text-align:right">142</td>
+                </tr>
+              </tbody>
+            </table>
+            <a href="#" class="table-link">Voir tous les modèles</a>
+          </div>
+
         </div>
       </section>
 
-      <!-- Les autres modules seront injectés ici par JavaScript -->
+      <!-- Modules JS (vides pour l'instant) -->
       <section id="module-chat" class="hidden"></section>
       <section id="module-resume" class="hidden"></section>
       <section id="module-classification" class="hidden"></section>
@@ -133,8 +185,6 @@
     </main>
   </div>
 
-  <!-- Lien vers notre fichier JavaScript -->
   <script src="js/script.js"></script>
-
 </body>
 </html>
