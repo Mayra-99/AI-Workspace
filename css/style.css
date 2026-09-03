@@ -326,3 +326,72 @@ body {
 .hidden {
   display: none;
 }
+/* ============================================
+   MODULES JS — styles communs
+   ============================================ */
+
+/* Carte blanche contenant les éléments d'un module */
+.module-card {
+  background-color: var(--carte-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+/* Label au-dessus des champs */
+.input-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--texte-titre);
+  margin-bottom: 8px;
+}
+
+/* Zone de texte (textarea) */
+.text-area {
+  width: 100%;
+  height: 160px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  resize: vertical;        /* l'utilisateur peut agrandir verticalement */
+  margin-bottom: 16px;
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--texte-titre);
+}
+
+.text-area:focus {
+  outline: none;
+  border-color: var(--bleu); /* bordure bleue quand on clique dedans */
+}
+
+/* Bouton principal bleu */
+.btn-primary {
+  background-color: var(--bleu);
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #1447a0; /* bleu plus foncé au survol */
+}
+
+/* Zone d'affichage du résultat */
+.output-box {
+  background-color: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--texte-titre);
+  min-height: 80px;
+}
