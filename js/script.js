@@ -141,6 +141,7 @@ async function resumerTexte() {
     // L'API renvoie un tableau → on prend le premier élément
     const resume = resultat[0]?.summary_text || "Aucun résumé généré.";
     outputBox.textContent = resume;
+    sauvegarderHistorique("Résumé", texte.substring(0, 80), resume);
 
   } catch (erreur) {
     outputBox.textContent = "❌ Erreur : " + erreur.message;
@@ -190,6 +191,7 @@ async function traduireTexte() {
     });
     const traduction = resultat[0]?.translation_text || "Traduction indisponible.";
     outputBox.textContent = traduction;
+    sauvegarderHistorique("Traduction", texte.substring(0, 80), traduction);
 
   } catch (erreur) {
     outputBox.textContent = "❌ Erreur : " + erreur.message;
@@ -246,6 +248,7 @@ async function envoyerMessage() {
 
     const reponse = resultat?.generated_text || "Je n'ai pas compris, reformulez.";
     document.getElementById(loadingId).textContent = "🤖 " + reponse;
+    sauvegarderHistorique("Chat", message, reponse);
     messagesBox.scrollTop = messagesBox.scrollHeight;
 
   } catch (erreur) {
@@ -359,6 +362,95 @@ function predire() {
     💰 Revenu : ${revenu.toLocaleString()} FCFA<br><br>
     💡 ${conseil}
   `;
+  sauvegarderHistorique("Prédiction", `Age:${age} Revenu:${revenu} Ville:${ville}`, `Score:${score}/100`);
+}
+
+// ─── MODULE HISTORIQUE ───────────────────────────────────────
+// localStorage = mémoire du navigateur, persiste après fermeture
+
+function sauvegarderHistorique(service, entree, sortie) {
+  // Récupère l'historique existant ou tableau vide
+  const historique = JSON.parse(localStorage.getItem('ai-workspace') || '[]');
+
+  // Ajoute la nouvelle entrée au début
+  historique.unshift({
+    id: Date.now(),
+    service: service,
+    entree: entree,
+    sortie: sortie,
+    date: new Date().toLocaleString('fr-FR')
+  });
+
+  // Max 50 entrées
+  if (historique.length > 50) historique.pop();
+
+  // Sauvegarde
+  localStorage.setItem('ai-workspace', JSON.stringify(historique));
+}
+
+function buildHistorique() {
+  const section = document.getElementById('module-historique');
+  if (!section) return;
+
+  const historique = JSON.parse(localStorage.getItem('ai-workspace') || '[]');
+
+  let contenu = `
+    <div class="module-card">
+      <h2>📋 Historique des requêtes</h2>
+      <div style="display:flex; gap:1rem; margin-bottom:1rem;">
+        <input type="text" class="text-area" id="recherche-historique"
+          placeholder="🔍 Rechercher..."
+          oninput="filtrerHistorique()"
+          style="height:auto; padding:0.5rem; flex:1;" />
+        <button class="btn-secondary" onclick="viderHistorique()">🗑️ Tout supprimer</button>
+      </div>
+      <div id="liste-historique">
+  `;
+
+  if (historique.length === 0) {
+    contenu += `<p style="color:#94a3b8; text-align:center; padding:2rem;">
+      Aucune requête dans l'historique.
+    </p>`;
+  } else {
+    historique.forEach(item => {
+      contenu += `
+        <div class="historique-item" data-id="${item.id}">
+          <div class="historique-header">
+            <span class="badge-service">${item.service}</span>
+            <span class="historique-date">${item.date}</span>
+            <button class="btn-delete" onclick="supprimerEntree(${item.id})">✕</button>
+          </div>
+          <div class="historique-entree"><strong>Entrée :</strong> ${item.entree}</div>
+          <div class="historique-sortie"><strong>Sortie :</strong> ${item.sortie}</div>
+        </div>
+      `;
+    });
+  }
+
+  contenu += `</div></div>`;
+  section.innerHTML = contenu;
+}
+
+function filtrerHistorique() {
+  const recherche = document.getElementById('recherche-historique').value.toLowerCase();
+  const items = document.querySelectorAll('.historique-item');
+  items.forEach(item => {
+    item.style.display = item.textContent.toLowerCase().includes(recherche) ? 'block' : 'none';
+  });
+}
+
+function supprimerEntree(id) {
+  let historique = JSON.parse(localStorage.getItem('ai-workspace') || '[]');
+  historique = historique.filter(item => item.id !== id);
+  localStorage.setItem('ai-workspace', JSON.stringify(historique));
+  buildHistorique();
+}
+
+function viderHistorique() {
+  if (confirm("Supprimer tout l'historique ?")) {
+    localStorage.removeItem('ai-workspace');
+    buildHistorique();
+  }
 }
 // ─── DÉMARRAGE ───────────────────────────────────────────────
 // S'exécute quand tout le HTML est chargé
@@ -366,6 +458,7 @@ document.addEventListener('DOMContentLoaded', function () {
   buildResume();            // Construit le module résumé
   buildTraduction();        // Construit le module traduction
   buildPrediction();        // Construit le module prédiction
-    buildChat();              // Construit le module chat
+  buildChat();                      // Construit le module chat
+  buildHistorique();        // Construit le module historique
   showModule('dashboard'); // Affiche le dashboard par défaut
 });
