@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Workspace</title>
+  <!-- Lien vers notre fichier CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===== ENTÊTE ===== -->
+  <header class="header">
+    <div class="header-logo">AI Workspace</div>
+    <div class="header-user">Admin User ▾</div>
+  </header>
+
+  <!-- ===== CONTENEUR PRINCIPAL (sidebar + main) ===== -->
+  <div class="container">
+
+    <!-- === BARRE LATÉRALE === -->
+    <aside class="sidebar">
+      <h2 class="sidebar-title">AI Workspace</h2>
+
+      <!-- Menu de navigation -->
+      <nav>
+        <ul class="nav-list">
+          <!-- Chaque item appelle showModule() en JS pour afficher le bon contenu -->
+          <li class="nav-item active" onclick="showModule('dashboard')">Tableau de bord</li>
+          <li class="nav-item" onclick="showModule('chat')">Chat</li>
+          <li class="nav-item" onclick="showModule('resume')">Résumé de texte</li>
+          <li class="nav-item" onclick="showModule('classification')">Classification</li>
+          <li class="nav-item" onclick="showModule('traduction')">Traduction</li>
+          <li class="nav-item" onclick="showModule('historique')">Historique</li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- === ZONE PRINCIPALE === -->
+    <main class="main" id="main-content">
+
+      <!-- TABLEAU DE BORD (affiché par défaut) -->
+      <section id="module-dashboard">
+        <h1 class="module-title">Tableau de bord</h1>
+        <p class="module-subtitle">Bienvenue sur votre espace de travail intelligent.</p>
+
+        <!-- Cartes de statistiques fictives -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <p class="stat-label">Nombre de jeux de données</p>
+            <p class="stat-value">24</p>
+            <p class="stat-change">+3 ce mois-ci</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Nombre de requêtes</p>
+            <p class="stat-value">1 256</p>
+            <p class="stat-change">+18% ce mois-ci</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Modèles disponibles</p>
+            <p class="stat-value">12</p>
+            <p class="stat-change">+2 ce mois-ci</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Utilisateurs actifs</p>
+            <p class="stat-value">8</p>
+            <p class="stat-change">+2 ce mois-ci</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Tâches exécutées</p>
+            <p class="stat-value">342</p>
+            <p class="stat-change">+22% ce mois-ci</p>
+          </div>
+        </div>
+
+        <!-- Graphiques : captures d'écran du PDF insérées comme images -->
+        <div class="charts-grid">
+          <div class="chart-box">
+            <p class="chart-title">Requêtes par jour <span>7 derniers jours ▾</span></p>
+            <!-- Image capturée depuis le PDF du prof -->
+            <img src="images/graph1.png" alt="Graphique requêtes par jour" />
+          </div>
+          <div class="chart-box">
+            <p class="chart-title">Répartition des requêtes par service</p>
+            <!-- Image capturée depuis le PDF du prof -->
+            <img src="images/graph2.png" alt="Graphique répartition" />
+          </div>
+        </div>
+
+        <!-- Tableau activité récente (données fictives) -->
+        <div class="table-section">
+          <h3>Activité récente</h3>
+          <table class="activity-table">
+            <thead>
+              <tr>
+                <th>Activité</th>
+                <th>Service</th>
+                <th>Utilisateur</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Résumé du document_projet.pdf</td>
+                <td>Résumé de texte</td>
+                <td>Admin User</td>
+                <td>21/05/2024 14:32</td>
+              </tr>
+              <tr>
+                <td>Classification de sentiments</td>
+                <td>Classification</td>
+                <td>Admin User</td>
+                <td>21/05/2024 14:31</td>
+              </tr>
+              <tr>
+                <td>Traduction FR → EN</td>
+                <td>Traduction</td>
+                <td>Admin User</td>
+                <td>21/05/2024 14:15</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Les autres modules seront injectés ici par JavaScript -->
+      <section id="module-chat" class="hidden"></section>
+      <section id="module-resume" class="hidden"></section>
+      <section id="module-classification" class="hidden"></section>
+      <section id="module-traduction" class="hidden"></section>
+      <section id="module-historique" class="hidden"></section>
+
+    </main>
+  </div>
+
+  <!-- Lien vers notre fichier JavaScript -->
+  <script src="js/script.js"></script>
+
+</body>
+</html>
